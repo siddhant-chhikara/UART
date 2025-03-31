@@ -8,7 +8,7 @@ module transmitter (
     output reg busy
 );
     localparam BITS_PER_WORD = 32;
-    localparam CLOCK_DIVIDER = 16;
+    localparam CLOCK_DIVIDER = 10417;
     
     localparam WAIT_FOR_DATA = 0;
     localparam SEND_START_BIT = 1;
