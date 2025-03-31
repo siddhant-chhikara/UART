@@ -8,7 +8,7 @@ module receiver (
     output reg parity_error
 );
     localparam BITS_PER_WORD = 32;
-    localparam CLOCK_DIVIDER = 16;
+    localparam CLOCK_DIVIDER = 10417;
     localparam SAMPLE_MIDDLE = CLOCK_DIVIDER/2;
     
     localparam WAIT_FOR_START = 0;
