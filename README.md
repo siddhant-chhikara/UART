@@ -1,89 +1,105 @@
-## UART Core Implementation
+# 🔄 UART Core (Verilog) – Full-Duplex Serial Communication IP
 
-## Overview
+## ⚡ Overview
 
-This repository contains a robust UART (Universal Asynchronous Receiver-Transmitter) implementation in Verilog HDL that features high configurability, complete asynchronous transmission capabilities, and extensive protocol verification. The core supports 32-bit data transfer with configurable parity checking.
+This project presents a fully configurable **UART (Universal Asynchronous Receiver-Transmitter)** core written in **Verilog HDL**, tailored for **full-duplex serial communication** in custom digital systems. It supports **32-bit data transmission**, configurable parity, and robust error detection, making it suitable for **SoCs**, **FPGAs**, and **embedded communication subsystems**.
 
-## Technical Specifications
+## 📐 Technical Specifications
 
-- **Architecture**: Full-duplex asynchronous serial communication
-- **Data Width**: 32-bit configurable word size
-- **Baud Rate**: Programmable clock divider (16x oversampling)
-- **Framing**: 1 start bit + 32 data bits + 1 parity bit + 1 stop bit
-- **Parity**: Configurable odd/even parity generation and checking
-- **Synchronization**: Multi-stage input synchronization for metastability protection
-- **Edge Detection**: Precise start bit detection using edge-sensitive triggering
-- **Protocol Handling**: Complete state machine for transmit and receive operations
+* **Data Width:** 32-bit (configurable)
+* **Baud Rate:** 9600 bps (programmable via clock divider)
+* **Oversampling:** 16x for accurate bit detection
+* **Framing Format:** 1 start bit, 32 data bits, 1 parity bit, 1 stop bit
+* **Parity:** Configurable (odd/even)
+* **Architecture:** Full-duplex asynchronous communication
+* **Synchronization:** Multi-stage metastability protection
+* **State Machines:** Clean FSMs for both TX and RX
 
-## Key Features
 
-### Transmitter Module
-- State-based transmission control
-- Programmable baud rate generation
-- Dynamic parity calculation (odd/even selectable)
-- Busy status signaling for flow control
-- Low-level bit timing control
+## 🔧 Features
 
-### Receiver Module
-- Robust start bit detection using edge sensing
-- Mid-bit sampling for noise immunity
-- Triple-register synchronization for metastability prevention
-- Real-time parity validation
-- Frame error detection
+### 📤 Transmitter
 
-### Protocol Implementation
-- Start bit verification
-- Data bit collection
-- Parity generation and validation
-- Stop bit integrity checking
-- Error detection and reporting
+* State-driven TX FSM for deterministic behavior
+* Clock divider-based baud rate control
+* Real-time parity bit generation (odd/even)
+* `busy` signal for transmission control
+* Bit-accurate edge-aligned output logic
 
-## Performance Characteristics
+### 📥 Receiver
 
-- **Clock Domain**: Single-clock design for simplified integration
-- **Resource Utilization**: Minimal footprint suitable for FPGA/ASIC implementation
-- **Verification**: Comprehensive testbench with protocol validation
-- **Reliability**: Protected against metastability and signal integrity issues
+* Start bit detection using edge sensitivity
+* Mid-bit sampling for noise immunity
+* Triple flip-flop synchronization for input stability
+* Frame and parity error detection
+* Outputs: `data_ready`, `parity_error`, `framing_error`
 
-## Interface Signals
+---
 
-### Transmitter
-- `clk`: System clock input
-- `rst`: Asynchronous reset
-- `data[31:0]`: Parallel data input
-- `start`: Transmission control signal
-- `parity_type`: 0 = odd parity, 1 = even parity
-- `tx`: Serial data output
-- `busy`: Transmitter status
+## 🔄 Protocol Workflow
 
-### Receiver
-- `clk`: System clock input
-- `rst`: Asynchronous reset
-- `rx`: Serial data input
-- `parity_type`: 0 = odd parity, 1 = even parity
-- `data[31:0]`: Parallel data output
-- `data_ready`: Data valid indicator
-- `parity_error`: Parity validation failure signal
+* Start bit recognition
+* Data reception/transmission
+* Parity bit generation and validation
+* Stop bit confirmation
+* Status/error signal generation
 
-## Verification Methodology
+---
 
-The implementation includes a comprehensive self-checking testbench that:
-- Simulates complete transmission cycles
-- Verifies data integrity across the serial interface
-- Tests both odd and even parity modes
-- Validates error detection capabilities
-- Monitors state transitions and timing parameters
+## ⚙️ Performance Metrics
 
-## Applications
+* **Clock Domain:** Single clock operation for easy integration
+* **Resource Use:** Low footprint, synthesis-optimized
+* **Reliability:** High noise immunity and metastability resistance
+* **Verification:** Exhaustive testbench with edge case testing
 
-This UART core is suitable for:
-- System-on-chip (SoC) integration
-- FPGA-based communication systems
-- Microcontroller interfaces
-- Digital signal processor (DSP) communications
-- Debug and diagnostic ports
-- Protocol bridging applications
+---
 
-## Implementation Notes
+## 🔌 I/O Interface
 
-The design employs finite state machines (FSM) for both transmitter and receiver, with careful attention to timing requirements and signal integrity. The architecture balances resource efficiency with robust operation through intelligent state encoding and streamlined processing paths.
+### ➤ Transmitter Ports
+
+* `clk` – Clock input
+* `rst` – Asynchronous reset
+* `data[31:0]` – Input parallel data
+* `start` – Trigger for data transmission
+* `parity_type` – 0 = odd, 1 = even parity
+* `tx` – Serial output
+* `busy` – Transmission status flag
+
+### ➤ Receiver Ports
+
+* `clk` – Clock input
+* `rst` – Asynchronous reset
+* `rx` – Serial data input
+* `parity_type` – 0 = odd, 1 = even parity
+* `data[31:0]` – Output parallel data
+* `data_ready` – Valid data signal
+* `parity_error` – Indicates parity mismatch
+* `framing_error` – Indicates stop bit fault
+
+---
+
+## 🧪 Testbench & Verification
+
+* Functional simulation of full TX-RX loop
+* Coverage for edge conditions and noise scenarios
+* Parity mismatch and frame error injection
+* Clock stretching and protocol timing checks
+
+---
+
+## 💡 Applications
+
+* SoC UART interfaces
+* FPGA communication peripherals
+* Microcontroller UART modules
+* Debug/monitor ports
+* Inter-chip communication links
+* Protocol converters
+
+---
+
+## 📝 Implementation Notes
+
+The design leverages **FSMs** for efficient TX/RX management, balances **performance and footprint**, and is ready for **synthesis and deployment** on FPGA or ASIC platforms. Emphasis is placed on **robust parity and framing error handling** for mission-critical applications.
